@@ -6,10 +6,14 @@ from typing import Optional
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
+from mangum import Mangum
 
 from app.rag_service import RAGService
 
 app = FastAPI(title="AI Knowledge Assistant")
+
+# Vercel serverless handler
+handler = Mangum(app)
 
 # Initialize RAG Service
 rag_service = RAGService()
