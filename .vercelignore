@@ -1,0 +1,12 @@
+venv/
+env/
+.env
+.env.local
+__pycache__/
+app/__pycache__/
+chroma_db/
+chorama_db/
+data/
+.git/
+.vscode/
+*.pyc
