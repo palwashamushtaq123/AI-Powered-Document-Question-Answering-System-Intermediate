@@ -1,109 +1,314 @@
-# 🧠 AI Knowledge Assistant (RAG & Semantic Search System)
+# 🧠 AI Knowledge Assistant — RAG & Semantic Search System
 
-An intelligent Retrieval-Augmented Generation (RAG) web application built using **FastAPI**, **LangChain**, **ChromaDB**, and **Groq LLM** (Llama-3.3-70b). 
+An intelligent **Retrieval-Augmented Generation (RAG)** web application built with **FastAPI, LangChain, ChromaDB, Sentence Transformers, and Groq LLM (Llama-3.3-70b)**.
 
-This platform enables users to perform strict-isolated document querying on pre-loaded system knowledge bases as well as user-uploaded custom documents using advanced prompt engineering techniques and dense vector similarity search.
+The application allows users to query a pre-loaded knowledge base as well as upload their own **PDF, TXT, and Markdown documents**. It uses dense vector embeddings and semantic similarity search to retrieve relevant information before generating answers with the Groq LLM.
 
----
-
-## 🔗 Live Demo
-🌐 **Deployment Link:** [Click Here to View Live Project](https://your-vercel-app-url.vercel.app)
+> **Note:** This project is configured and tested as a local application. No live deployment is currently provided.
 
 ---
 
-## ✨ Key Features & Highlights
+## ✨ Key Features
 
-- **Dynamic Data Source Filtering:**
-  - **System Data Only:** Search strictly within the default 5 foundational documents in `./data/`.
-  - **User Uploaded Only:** Query strictly against newly uploaded PDF/TXT/MD files without history leakage.
-  - **All Documents:** Search seamlessly across both base knowledge and user-uploaded data sources.
-- **Prompt Engineering Strategy Switcher (Part 1 Requirement):**
-  - Dynamic toggling between **Zero-Shot**, **Few-Shot**, and **Role-Based Prompting**.
-- **Dense Vector Semantic Search (Part 2 Requirement):**
-  - High-precision similarity search powered by `sentence-transformers/all-MiniLM-L6-v2` embeddings and `ChromaDB`.
-- **Automatic In-Memory Reset & Isolation:**
-  - Temporary isolated storage for user uploads to guarantee zero leakage into system files.
-- **Modern Responsive UI:**
-  - Dark-mode HTML/JS client with real-time status notifications and retrieved chunk scoring visualization.
+### 📂 Dynamic Document Source Filtering
+
+* **System Data Only** — Search strictly within the 5 pre-loaded knowledge documents.
+* **User Uploaded Only** — Query only documents uploaded during the current session.
+* **All Documents** — Search across both system and user-uploaded documents.
+
+### 🤖 Prompt Engineering
+
+Supports three prompting strategies:
+
+* **Zero-Shot Prompting**
+* **Few-Shot Prompting**
+* **Role-Based Prompting**
+
+### 🔎 Dense Vector Semantic Search
+
+Uses:
+
+* `all-MiniLM-L6-v2` embeddings
+* ChromaDB vector database
+* Cosine similarity-based retrieval
+
+This allows the system to retrieve relevant content based on **meaning and context**, rather than relying only on exact keyword matches.
+
+### 📄 Multi-Format Document Support
+
+Users can upload:
+
+* PDF
+* TXT
+* Markdown (`.md`)
+
+### 🔐 Document Isolation
+
+System documents and user-uploaded documents are categorized separately to prevent unintended cross-source retrieval.
+
+### 🎨 Modern Web Interface
+
+* Responsive dark-mode interface
+* Document upload functionality
+* Prompt strategy selector
+* Data-source filtering
+* Retrieved context display
+* Similarity/distance score visualization
+* Real-time status notifications
 
 ---
 
-## 📚 Theory Requirements & Conceptual Answers
+# 📚 Theory & Conceptual Understanding
 
-### 1. Semantic Search vs. Keyword Search
-- **Keyword Search (Lexical Matching):** Matches literal query words directly against text tokens using traditional frequency algorithms (e.g., BM25, TF-IDF). It fails to extract relevant answers when a query uses synonyms, context shifts, or different phrasings without exact character matches.
-- **Semantic Search (Dense Vector Retrieval):** Converts text into high-dimensional numerical embeddings using deep learning models (`all-MiniLM-L6-v2`). It captures the underlying **intent, meaning, and contextual relationships** of phrases, enabling accurate retrieval even when no common keywords are shared between the query and source documents.
+## 1. Semantic Search vs. Keyword Search
 
-### 2. Prompting Techniques Implemented
-- **Zero-Shot Prompting:** Evaluates LLM capability using direct system instructions without providing prior example outputs.
-- **Few-Shot Prompting:** Demonstrates target output structure through concise contextual patterns to guide answer generation.
-- **Role-Based Prompting:** Instructs the LLM to adopt a domain persona (e.g., HR Specialist / Document Analyst) for precise and professional responses.
+### Keyword Search
+
+Keyword or lexical search looks for direct matches between query terms and document text. Traditional approaches include **TF-IDF** and **BM25**.
+
+Its limitation is that it may fail when the query uses different wording, synonyms, or contextual variations.
+
+### Semantic Search
+
+Semantic search converts text into numerical vector representations called **embeddings**.
+
+The `all-MiniLM-L6-v2` model captures the semantic meaning and contextual relationships between text. ChromaDB then retrieves the most relevant document chunks based on vector similarity.
+
+For example:
+
+> Query: `How does vector storage work?`
+
+A semantic search system can retrieve content discussing **embeddings, vector databases, similarity search, and document retrieval**, even when the exact query words are not present.
 
 ---
 
-## 🛠️ Project Architecture & File Structure
+## 2. Prompting Techniques Implemented
+
+### Zero-Shot Prompting
+
+The model receives instructions without any example responses.
+
+### Few-Shot Prompting
+
+The model is guided using examples or contextual patterns to improve response consistency.
+
+### Role-Based Prompting
+
+The model is assigned a specific role, such as:
+
+> **HR Specialist and Document Analyst**
+
+This helps guide the model toward professional and domain-focused responses.
+
+---
+
+# 🏗️ RAG Pipeline
 
 ```text
+User Question
+      ↓
+Query Processing
+      ↓
+Embedding Generation
+      ↓
+ChromaDB Similarity Search
+      ↓
+Relevant Document Chunks
+      ↓
+Context Construction
+      ↓
+Groq LLM
+      ↓
+Final Answer
+```
+
+### Document Ingestion Pipeline
+
+```text
+PDF / TXT / MD
+      ↓
+Text Extraction
+      ↓
+Text Chunking
+      ↓
+Sentence Transformer Embeddings
+      ↓
+ChromaDB
+      ↓
+Vector Retrieval
+```
+
+---
+
+# 🛠️ Technology Stack
+
+| Technology            | Purpose                          |
+| --------------------- | -------------------------------- |
+| Python                | Core programming language        |
+| FastAPI               | Backend API framework            |
+| LangChain             | Text splitting and RAG utilities |
+| ChromaDB              | Vector database                  |
+| Sentence Transformers | Text embeddings                  |
+| Groq                  | LLM inference                    |
+| Llama-3.3-70b         | Language model                   |
+| Pypdf                 | PDF text extraction              |
+| HTML/CSS/JavaScript   | Frontend                         |
+
+---
+
+# 📁 Project Structure
+
+```text
+AI-Powered-Document-Question-Answering-System-Intermediate/
+│
 ├── app/
-│   ├── rag_service.py       # Core RAG engine, ChromaDB setup, & Groq LLM integration
-│   └── ...                  # Helper modules (chunker, document loader, embedding service)
-├── data/                    # Base System Documents (5 Default Files)
+│   ├── __init__.py
+│   ├── rag_service.py
+│   ├── chunker.py
+│   ├── config.py
+│   ├── document_loader.py
+│   ├── embedding_service.py
+│   ├── groq_service.py
+│   ├── ingest_service.py
+│   └── vector_store.py
+│
+├── data/
 │   ├── llm_governance.txt
 │   ├── prompt_engineering.pdf
 │   ├── rag_architecture.txt
 │   ├── search_paradigms.md
 │   └── vectordb_chroma.md
-├── templates/               # Web Interface
-│   └── index.html           # Main UI with responsive layout
-├── api.py                   # FastAPI server endpoints (/upload, /rag/query)
-├── requirements.txt         # Project dependencies
-├── .env.example             # Environment variables template
-└── README.md                # Project documentation  
-```  
-
-
-
-
-
-
+│
+├── templates/
+│   └── index.html
+│
+├── assets/
+│   ├── Rag_ssystem_file_fewshot.png
+│   ├── Rag_system_file_cot.png
+│   ├── Rag_system_file_zeroshot.png
+│   └── user_uploaded_file_output.png
+│
+├── api.py
+├── cli.py
+├── ingest.py
+├── prompt_benchmark.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
+```
 
 ---
 
-# 🚀 Local Installation & Setup Guide
+# 🚀 Local Installation & Setup
 
-### 1. Clone Repository
+## 1. Clone Repository
 
+```bash
 git clone https://github.com/palwashamushtaq123/AI-Powered-Document-Question-Answering-System-Intermediate.git
 cd AI-Powered-Document-Question-Answering-System-Intermediate
+```
 
-### 2. Create and Activate Virtual Environment
+## 2. Create Virtual Environment
 
-- **python -m venv venv**
-# On Windows:
-- **venv\Scripts\activate**
-# On Mac/Linux:
-- **source venv/bin/activate**
+```bash
+python -m venv venv
+```
 
+### Windows
 
-### 3. Install Dependencies
+```bash
+venv\Scripts\activate
+```
 
-- **pip install -r requirements.txt**
+### macOS / Linux
 
-### 4. Configure Environment Variables
+```bash
+source venv/bin/activate
+```
 
-Create a .env file in the root directory and add your Groq API key:
+## 3. Install Dependencies
 
-- **GROQ_API_KEY=your_groq_api_key_here**
+```bash
+pip install -r requirements.txt
+```
 
+## 4. Configure Environment Variables
 
+Create a `.env` file in the project root:
 
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
 
-### 5. Run Application
+## 5. Run the Application
 
-- **uvicorn api:app --reload**
+```bash
+uvicorn api:app --reload
+```
 
-**Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser.**
+Open the application in your browser:
 
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+# 🔌 API Endpoints
+
+### Home
+
+```text
+GET /
+```
+
+Loads the web interface.
+
+### Upload Document
+
+```text
+POST /upload
+```
+
+Uploads and indexes a PDF, TXT, or Markdown document.
+
+### RAG Query
+
+```text
+POST /rag/query
+```
+
+Processes a question using semantic retrieval and the Groq LLM.
+
+---
+
+# 📸 Project Screenshots
+
+The repository includes screenshots demonstrating:
+
+* Zero-Shot prompting
+* Few-Shot prompting
+* Role-Based / CoT prompting
+* User document upload and retrieval
+
+Screenshots are available in the [`assets`](https://github.com/palwashamushtaq123/AI-Powered-Document-Question-Answering-System-Intermediate/tree/main/assets) folder.
+
+---
+
+# 🎯 Project Objective
+
+The objective of this project is to demonstrate how **Retrieval-Augmented Generation** combines:
+
+* Document processing
+* Text chunking
+* Dense embeddings
+* Vector databases
+* Semantic search
+* Prompt engineering
+* Large Language Models
+
+to create a context-aware AI knowledge assistant that generates answers based on retrieved document information.
 
 ---
 
@@ -111,4 +316,6 @@ Create a .env file in the root directory and add your Groq API key:
 
 **Palwasha Sheikh**
 
-AI & Machine Learning Assignment Submission
+AI & Machine Learning | Data Science
+
+**AI & Machine Learning Assignment Submission**
