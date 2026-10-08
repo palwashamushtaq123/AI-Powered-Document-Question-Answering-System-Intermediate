@@ -1,0 +1,9 @@
+Operational Governance, Chunk Optimization, and Hallucination Reduction
+
+Deploying production-grade RAG pipelines requires continuous optimization across chunking, retrieval parameters, and model inference settings.
+
+Temperature and Top-P Controls:
+For factual question-answering systems, LLM temperature settings should be constrained between 0.0 and 0.2. Lower temperatures suppress random token sampling, enforcing deterministic responses strictly grounded in the retrieved document chunks.
+
+Re-indexing Protocols and Source Traceability:
+Whenever documents are modified, replaced, or updated, vector indices must undergo deterministic re-indexing. Storing metadata alongside vector embeddings—such as source filename, page index, and chunk sequence numbers—is vital for end-to-end source attribution and enterprise verification.

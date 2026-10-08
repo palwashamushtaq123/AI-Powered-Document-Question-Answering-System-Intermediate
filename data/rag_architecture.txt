@@ -1,0 +1,7 @@
+Advanced RAG Architecture and System Mechanics
+
+Retrieval-Augmented Generation (RAG) bridges the gap between static Large Language Model knowledge and dynamic external data. In modern enterprise systems, RAG operates through a precise execution pipeline designed to eliminate hallucinations and deliver factual context-driven responses.
+
+The process begins during document ingestion, where raw unformatted unstructured sources (such as PDFs, Markdown, and TXT files) are parsed into standardized string payloads. Raw documents are rarely passed directly to vector engines due to context window constraints and retrieval noise. Instead, text is split into granular chunks. Optimal chunking strategies typically range between 500 to 1200 characters, maintaining an overlap window of 100 to 200 characters to ensure that sentence boundary context is not severed across adjacent chunks.
+
+Once chunked, each snippet is transformed into a high-dimensional vector space using pre-trained dense retrieval transformers such as SentenceTransformers (e.g., all-MiniLM-L6-v2). These vectors encapsulate deep semantic relationships, mapping concepts based on meaning rather than surface lexical tokens.

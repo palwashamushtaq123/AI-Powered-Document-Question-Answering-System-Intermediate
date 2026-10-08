@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Knowledge Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header span {
+            font-size: 0.85rem;
+            background: #334155;
+            color: #c084fc;
+            padding: 4px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .section-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--accent-color);
+        }
+
+        .upload-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-upload {
+            background: #38bdf8;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        .btn-upload:hover {
+            background: #0284c7;
+            color: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            font-size: 1rem;
+            padding: 14px;
+            margin-top: 5px;
+        }
+
+        .status-msg {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .result-box {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #a7f3d0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chunks-list {
+            margin-top: 15px;
+        }
+
+        .chunk-card {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .chunk-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 4px;
+        }
+
+        .theory-card {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #fef08a;
+        }
+
+        .theory-card h4 {
+            color: #f59e0b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1><i class="fa-solid fa-brain"></i> AI Knowledge Assistant</h1>
+        <span>Created by Palwasha Sheikh</span>
+    </div>
+
+    <!-- Document Upload Section -->
+    <div class="section-box">
+        <label><i class="fa-solid fa-cloud-arrow-up"></i> Upload Document (PDF, TXT, MD):</label>
+        <div class="upload-row">
+            <input type="file" id="fileInput" accept=".pdf,.txt,.md">
+            <button type="button" id="uploadBtn" class="btn btn-upload">
+                <i class="fa-solid fa-upload"></i> Upload
+            </button>
+        </div>
+        <div id="uploadStatus" class="status-msg"></div>
+    </div>
+
+    <!-- Query Form -->
+    <form id="queryForm">
+        <div class="form-group">
+            <label for="questionInput"><i class="fa-circle-question fa-regular"></i> Ask a Question:</label>
+            <input type="text" id="questionInput" placeholder="What is the primary topic of the documents?" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dataSourceSelect"><i class="fa-solid fa-database"></i> Select Data Source Filter:</label>
+            <select id="dataSourceSelect">
+                <option value="all">All Documents (System Data + Uploaded)</option>
+                <option value="system_data" selected>System Data Only (Data Folder Files)</option>
+                <option value="user_upload">User Uploaded Document Only</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="promptTypeSelect"><i class="fa-sliders fa-solid"></i> Select Prompt Technique (Part 1):</label>
+            <select id="promptTypeSelect">
+                <option value="zero_shot">Zero-Shot Prompting</option>
+                <option value="few_shot">Few-Shot Prompting</option>
+                <option value="role_based" selected>Role-Based Prompting</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-submit" id="submitBtn">
+            <i class="fa-paper-plane fa-solid"></i> Submit Query
+        </button>
+    </form>
+
+    <!-- Answer Section -->
+    <div class="result-box">
+        <div class="result-title">
+            <i class="fa-robot fa-solid"></i> Answer:
+        </div>
+        <p id="answerText" style="line-height: 1.6; color: #f1f5f9;">Submit a query to generate an answer.</p>
+    </div>
+
+    <!-- Top Chunks Section -->
+    <div style="margin-top: 20px;">
+        <label><i class="fa-layer-group fa-solid"></i> Retrieved Top Chunks (Part 2 - Semantic Search):</label>
+        <div id="chunksContainer" class="chunks-list">
+            <p style="font-size: 0.85rem; color: var(--text-sub);">No chunks retrieved yet.</p>
+        </div>
+    </div>
+
+    <!-- Theory Requirement Box -->
+    <div class="theory-card">
+        <h4><i class="fa-lightbulb fa-solid"></i> Theory Requirement: Semantic vs. Keyword Search</h4>
+        <p><strong>Keyword Search:</strong> Direct string/word matching algorithms (e.g., BM25). Fails when queries use synonyms without exact word overlap.</p>
+        <p style="margin-top: 6px;"><strong>Semantic Search:</strong> Uses dense vector embeddings (`sentence-transformers`) to evaluate query intent and context meaning via Cosine Distance/Similarity metric.</p>
+    </div>
+
+    <div class="footer">
+        Assignment Submission | RAG System with ChromaDB & Groq LLM
+    </div>
+</div>
+
+<script>
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+        const fileInput = document.getElementById('fileInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        if (!fileInput.files.length) {
+            uploadStatus.style.color = '#f87171';
+            uploadStatus.innerText = "Please select a file first.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        uploadStatus.style.color = '#38bdf8';
+        uploadStatus.innerText = "Uploading & Indexing document...";
+
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                uploadStatus.style.color = '#4ade80';
+                uploadStatus.innerText = "✓ " + result.message;
+            } else {
+                uploadStatus.style.color = '#f87171';
+                uploadStatus.innerText = "Error: " + (result.detail || "Upload failed.");
+            }
+        } catch (err) {
+            uploadStatus.style.color = '#f87171';
+            uploadStatus.innerText = "Upload error: " + err;
+        }
+    });
+
+    document.getElementById('queryForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const question = document.getElementById('questionInput').value.trim();
+        const promptType = document.getElementById('promptTypeSelect').value;
+        const dataSource = document.getElementById('dataSourceSelect').value;
+        const answerText = document.getElementById('answerText');
+        const chunksContainer = document.getElementById('chunksContainer');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!question) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        answerText.innerText = "Generating answer...";
+        chunksContainer.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-sub);">Searching database...</p>';
+
+        try {
+            const payload = {
+                question: question,
+                prompt_type: promptType,
+                filter_category: dataSource === 'all' ? null : dataSource,
+                top_k: 3
+            };
+
+            const response = await fetch('/rag/query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                answerText.innerText = data.answer || "No response text returned.";
+
+                if (data.context_chunks && data.context_chunks.length > 0) {
+                    chunksContainer.innerHTML = data.context_chunks.map((chunk, index) => `
+                        <div class="chunk-card">
+                            <div class="chunk-header">
+                                <span><strong>Chunk ${index + 1}</strong> | Source: ${chunk.source || 'Uploaded Document'}</span>
+                                <span>Score/Distance: ${chunk.distance ? Number(chunk.distance).toFixed(4) : (chunk.score ? Number(chunk.score).toFixed(4) : 'N/A')}</span>
+                            </div>
+                            <div>${chunk.text || chunk.content || chunk}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    chunksContainer.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-sub);">No relevant chunks retrieved.</p>';
+                }
+            } else {
+                answerText.innerText = "Error: " + (data.detail || "Failed to process query.");
+                chunksContainer.innerHTML = '';
+            }
+        } catch (err) {
+            answerText.innerText = "Connection Error: " + err;
+            chunksContainer.innerHTML = '';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-paper-plane fa-solid"></i> Submit Query';
+        }
+    });
+</script>
+
+</body>
+</html>
